@@ -28,6 +28,7 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   min-height: 100vh;
+  overflow-x: hidden;
 }
 
 /* Layout */
@@ -295,5 +296,26 @@ body {
   .dashboard-col-md-8 {
     flex: 0 0 66.666667%;
     max-width: 66.666667%;
+  }
+}
+
+/* Mobile Responsiveness Polish */
+@media (max-width: 767px) {
+  .dashboard-header h1 {
+    font-size: 1.5rem;
+    text-align: center;
+  }
+  
+  .dashboard-btn {
+    width: 100%;
+    padding: 12px 20px;
+  }
+  
+  .dashboard-container {
+    padding: 15px 10px;
+  }
+  
+  .dashboard-card {
+    padding: 1rem;
   }
 }

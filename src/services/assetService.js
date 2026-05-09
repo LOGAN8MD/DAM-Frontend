@@ -34,6 +34,12 @@ const assetService = {
   // Get download URL helper
   getDownloadUrl: (filename) => {
     return `${API_URL}/download/${filename}`;
+  },
+
+  // Delete an asset
+  deleteAsset: async (id) => {
+    const response = await axios.delete(`${API_URL}/${id}`);
+    return response.data;
   }
 };
 

@@ -6,6 +6,7 @@ const AssetList = ({ refreshTrigger }) => {
   const [assets, setAssets] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const [assetToDelete, setAssetToDelete] = useState(null);
 
   // Fetch assets on component mount or when refreshTrigger changes
   useEffect(() => {
@@ -23,6 +24,22 @@ const AssetList = ({ refreshTrigger }) => {
       setError('Failed to load assets. Please ensure the server is running.');
       setLoading(false);
     }
+  };
+
+  const confirmDelete = async () => {
+    if (!assetToDelete) return;
+    try {
+      await assetService.deleteAsset(assetToDelete._id);
+      setAssets(assets.filter(asset => asset._id !== assetToDelete._id));
+      setAssetToDelete(null);
+    } catch (err) {
+      console.error('Error deleting asset:', err);
+      alert('Failed to delete asset. Please try again.');
+    }
+  };
+
+  const cancelDelete = () => {
+    setAssetToDelete(null);
   };
 
   if (loading) return <div style={{ textAlign: 'center', padding: '20px' }}>Loading assets...</div>;
@@ -95,11 +112,45 @@ const AssetList = ({ refreshTrigger }) => {
                 >
                   Download
                 </a>
+                <button 
+                  onClick={() => setAssetToDelete(asset)}
+                  className="dashboard-btn dashboard-btn-danger"
+                  style={{ flex: 1, padding: '8px', fontSize: '12px', background: 'var(--gradient-danger)', border: 'none', color: 'white', borderRadius: '4px', cursor: 'pointer' }}
+                >
+                  Delete
+                </button>
               </div>
             </div>
           ))}
         </div>
       )}
+
+      {/* Delete Confirmation Modal */}
+      {assetToDelete && (
+        <div className="dashboard-modal-overlay">
+          <div className="dashboard-modal">
+            <h3>Confirm Deletion</h3>
+            <p>Are you sure you want to completely delete <strong>"{assetToDelete.originalName}"</strong>? This cannot be undone.</p>
+            <div style={{ display: 'flex', gap: '15px', justifyContent: 'center' }}>
+              <button 
+                onClick={cancelDelete} 
+                className="dashboard-btn" 
+                style={{ background: 'transparent', border: '1px solid var(--text-muted)', color: 'var(--text-main)', boxShadow: 'none' }}
+              >
+                Cancel
+              </button>
+              <button 
+                onClick={confirmDelete} 
+                className="dashboard-btn dashboard-btn-danger"
+                style={{ background: 'var(--gradient-danger)' }}
+              >
+                Yes, Delete It
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
     </div>
   );
 };

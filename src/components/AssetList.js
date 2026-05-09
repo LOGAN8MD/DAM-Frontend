@@ -2,15 +2,15 @@ import React, { useState, useEffect } from 'react';
 import assetService from '../services/assetService';
 import AssetFilter from './AssetFilter';
 
-const AssetList = () => {
+const AssetList = ({ refreshTrigger }) => {
   const [assets, setAssets] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
-  // Fetch assets on component mount
+  // Fetch assets on component mount or when refreshTrigger changes
   useEffect(() => {
     fetchAssets();
-  }, []);
+  }, [refreshTrigger]);
 
   const fetchAssets = async (filters = {}) => {
     try {
@@ -45,6 +45,17 @@ const AssetList = () => {
               <h4 className="asset-item-title" title={asset.originalName}>
                 {asset.originalName.length > 25 ? `${asset.originalName.substring(0, 25)}...` : asset.originalName}
               </h4>
+
+              {/* Show image preview if the file is an image */}
+              {asset.fileType.startsWith('image/') && (
+                <div style={{ marginBottom: '15px', textAlign: 'center', height: '150px', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'rgba(0,0,0,0.2)', borderRadius: '4px', overflow: 'hidden' }}>
+                  <img 
+                    src={asset.fileUrl} 
+                    alt={asset.originalName} 
+                    style={{ maxWidth: '100%', maxHeight: '100%', objectFit: 'contain' }}
+                  />
+                </div>
+              )}
               
               <p className="asset-item-meta">
                 <strong>Type:</strong> {asset.fileType.split('/')[1] || asset.fileType}

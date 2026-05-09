@@ -114,6 +114,37 @@ body {
   text-transform: uppercase;
 }
 
+/* Dropdown Autocomplete */
+.dashboard-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 0.4285rem;
+  z-index: 1000;
+  margin: 2px 0 0 0;
+  padding: 0;
+  list-style: none;
+  max-height: 200px;
+  overflow-y: auto;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+}
+
+.dashboard-dropdown li {
+  padding: 8px 15px;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: all 0.2s;
+  font-size: 0.85rem;
+}
+
+.dashboard-dropdown li:hover {
+  background: rgba(255,255,255,0.05);
+  color: var(--text-main);
+}
+
 /* Buttons */
 .dashboard-btn {
   background: var(--gradient-primary);

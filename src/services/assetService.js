@@ -1,6 +1,9 @@
 import axios from 'axios';
 
-const API_URL = 'http://localhost:1999/api/assets';
+const a='https://dam-backend-ilfz.onrender.com'
+// const a='http://localhost:1999'
+
+const API_URL = `${a}/api/assets`;
 
 const assetService = {
   // Upload a new asset

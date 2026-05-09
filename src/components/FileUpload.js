@@ -1,13 +1,14 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import assetService from '../services/assetService';
 
-const FileUpload = () => {
+const FileUpload = ({ onUploadSuccess }) => {
   const [file, setFile] = useState(null);
   const [tags, setTags] = useState('');
   const [progress, setProgress] = useState(0);
   const [message, setMessage] = useState('');
   const [status, setStatus] = useState('idle'); // 'idle', 'uploading', 'success', 'error'
   const [uploadedAsset, setUploadedAsset] = useState(null);
+  const fileInputRef = useRef(null);
 
   const handleFileChange = (e) => {
     setFile(e.target.files[0]);
@@ -44,6 +45,15 @@ const FileUpload = () => {
       setStatus('success');
       setMessage(responseData.message || 'File uploaded successfully!');
       setUploadedAsset(responseData.asset);
+      setFile(null);
+      setTags('');
+      if (fileInputRef.current) {
+        fileInputRef.current.value = '';
+      }
+      
+      if (onUploadSuccess) {
+        onUploadSuccess();
+      }
       
     } catch (error) {
       console.error('Upload error:', error);
@@ -65,7 +75,7 @@ const FileUpload = () => {
             <span className="custom-file-upload-btn">
               {file ? file.name : "Click here to browse files"}
             </span>
-            <input type="file" onChange={handleFileChange} />
+            <input type="file" onChange={handleFileChange} ref={fileInputRef} />
           </label>
         </div>
 
